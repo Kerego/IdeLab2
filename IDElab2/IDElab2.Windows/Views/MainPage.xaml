@@ -48,7 +48,7 @@
     </Page.Resources>
     <Grid x:Name="mainGrid" DataContext="{Binding Source={StaticResource shipStatusViewModel}}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Button x:Name="selfDestrButton" Content="{Binding selfDestroyTimer, Source={StaticResource selfDestroyViewModel}}" HorizontalAlignment="Center" Margin="1252,101,44,553" VerticalAlignment="Center" Click="selfDestructionActivated" RenderTransformOrigin="0.5,0.5" Style="{StaticResource ButtonStyle1}" Height="114" FontSize="40" IsEnabled="{Binding destroyButtonEnabled, Source={StaticResource selfDestroyViewModel}}"/>
-        <local:MyCustomControl x:Name="header" Tapped="changeHeaderColor" Blink="True" Text="Simulatron" TextColor="AliceBlue" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="595,10,599,0"/>
+        <local:BlinkText x:Name="header" Tapped="changeHeaderColor" Blink="True" Text="Simulatron" TextColor="AliceBlue" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="595,10,599,0"/>
         <ProgressBar HorizontalAlignment="Left" Height="75" Margin="37,417,0,0" VerticalAlignment="Top" Width="352" Foreground="#FFA81717" BorderBrush="{x:Null}" Value="{Binding health}"/>
         <ProgressBar HorizontalAlignment="Left" Height="75" Margin="954,417,0,0" VerticalAlignment="Top" Width="352" Value="{Binding fuel}" BorderBrush="{x:Null}" />
         <MediaElement x:Name="boomSound" Source="ms-appx:///Assets/boom.mp3" AutoPlay="False" />

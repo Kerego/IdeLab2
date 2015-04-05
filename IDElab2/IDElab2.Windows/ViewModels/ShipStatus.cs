@@ -18,9 +18,9 @@ namespace IDElab2.ViewModels
             battleLog = new ObservableCollection<TextBlock>();
             sliderValue = 50;
             alienWeakness = "Find Aliens Weakness";
-            useHighPowerWeapons = true;
+            useHighPowerWeapons = false;
             useLowPowerWeapons = false;
-            useHighPowerShields = true;
+            useHighPowerShields = false;
             useLowPowerShields = false;
             useShields = false;
             useWeapons = false;
