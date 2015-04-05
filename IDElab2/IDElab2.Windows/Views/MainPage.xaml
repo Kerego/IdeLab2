@@ -1,0 +1,78 @@
+﻿<Page
+    x:Class="IDElab2.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm ="using:IDElab2.ViewModels"
+    xmlns:local="using:IDElab2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <vm:ShipStatus x:Key="shipStatusViewModel"/>
+        <vm:SelfDestroy x:Key="selfDestroyViewModel"/>
+        <Style x:Key="ButtonStyle1" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource ButtonBackgroundThemeBrush}"/>
+            <Setter Property="Foreground" Value="{ThemeResource ButtonForegroundThemeBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderThemeBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
+            <Setter Property="Padding" Value="12,4,12,4"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Height="70" Width="70">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver"/>
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Focused"/>
+                                    <VisualState x:Name="Unfocused"/>
+                                    <VisualState x:Name="PointerFocused"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Ellipse HorizontalAlignment="Left" Height="70" StrokeEndLineCap="Square" Stroke="Black" VerticalAlignment="Top" Width="70" Fill="#FFEA0000"/>
+                            <ContentPresenter HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="46" Content="{TemplateBinding Content}" MinHeight="1" Margin="24,6,0,10" RenderTransformOrigin="0.543,0.481"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid x:Name="mainGrid" DataContext="{Binding Source={StaticResource shipStatusViewModel}}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button x:Name="selfDestrButton" Content="{Binding selfDestroyTimer, Source={StaticResource selfDestroyViewModel}}" HorizontalAlignment="Center" Margin="1252,101,44,553" VerticalAlignment="Center" Click="selfDestructionActivated" RenderTransformOrigin="0.5,0.5" Style="{StaticResource ButtonStyle1}" Height="114" FontSize="40" IsEnabled="{Binding destroyButtonEnabled, Source={StaticResource selfDestroyViewModel}}"/>
+        <local:MyCustomControl x:Name="header" Tapped="changeHeaderColor" Blink="True" Text="Simulatron" TextColor="AliceBlue" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="595,10,599,0"/>
+        <ProgressBar HorizontalAlignment="Left" Height="75" Margin="37,417,0,0" VerticalAlignment="Top" Width="352" Foreground="#FFA81717" BorderBrush="{x:Null}" Value="{Binding health}"/>
+        <ProgressBar HorizontalAlignment="Left" Height="75" Margin="954,417,0,0" VerticalAlignment="Top" Width="352" Value="{Binding fuel}" BorderBrush="{x:Null}" />
+        <MediaElement x:Name="boomSound" Source="ms-appx:///Assets/boom.mp3" AutoPlay="False" />
+
+        <Slider HorizontalAlignment="Left" Margin="435,432,0,0" VerticalAlignment="Top" Width="488" Value="{Binding sliderValue, Mode=TwoWay}" Background="Black" Foreground="#FFF70B16"/>
+        <ListView x:Name="battleLogList" HorizontalAlignment="Left" Height="248" Margin="435,510,0,0" VerticalAlignment="Top" Width="488" SelectionMode="None" ItemsSource="{Binding battleLog}"/>
+        <Image HorizontalAlignment="Left" Height="320" Margin="141,59,0,0" VerticalAlignment="Top" Width="1071" Source="ms-appx:///Assets/cockpit.jpg" Stretch="UniformToFill"/>
+        
+        <TextBlock HorizontalAlignment="Left" Margin="435,411,0,0" TextWrapping="Wrap" Text="Power                                  Energy Efficiency" VerticalAlignment="Top" Height="33" Width="488" FontSize="25"/>
+        <TextBlock HorizontalAlignment="Left" Margin="37,387,0,0" TextWrapping="Wrap" Text="Health" VerticalAlignment="Top" Width="84" FontSize="25"/>
+        <TextBlock HorizontalAlignment="Left" Margin="1222,382,0,0" TextWrapping="Wrap" Text="Energy" VerticalAlignment="Top" Width="84" FontSize="25"/>
+        <Button x:Name="findAlienWeaknessButton" Content="{Binding alienWeakness}" HorizontalAlignment="Left" Margin="1013,607,0,0" VerticalAlignment="Top" Width="250" Click="findAlienWeaknessButton_Click"/>
+        <FlipView HorizontalAlignment="Left" Margin="34,507,0,0" Width="358" Height="254" VerticalAlignment="Top">
+            <Grid>
+                <CheckBox x:Name="UseWeaponsCheckBox" Content="Use Weapons" HorizontalAlignment="Left" Margin="46,26,0,0" VerticalAlignment="Top" IsChecked="{Binding useWeapons, Mode=TwoWay}"/>
+                <RadioButton x:Name="UseLowPowerWeaponsRad" Content="Use Low Power Weapons" HorizontalAlignment="Left" Margin="74,69,0,0" VerticalAlignment="Top" GroupName="Weapons" IsEnabled="{Binding useWeapons}" IsChecked="{Binding useLowPowerWeapons, Mode=TwoWay}"/>
+                <RadioButton x:Name="UseHighPowerWeaponsRad" Content="Use High Power Weapons" HorizontalAlignment="Left" Margin="74,117,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.225,0.569" GroupName="Weapons" IsEnabled="{Binding IsChecked, ElementName=UseWeaponsCheckBox}" IsChecked="{Binding useHighPowerWeapons, Mode=TwoWay}"/>
+            </Grid>
+            <Grid>
+                <CheckBox x:Name="UseShieldsCheckBox" Content="Use Shields" HorizontalAlignment="Left" Margin="46,26,0,0" VerticalAlignment="Top" IsChecked="{Binding useShields, Mode=TwoWay}"/>
+                <RadioButton x:Name="UseLowPowerShieldsRad" Content="Use Low Power Shields" HorizontalAlignment="Left" Margin="74,69,0,0" VerticalAlignment="Top" GroupName="Shields" IsEnabled="{Binding IsChecked, ElementName=UseShieldsCheckBox}" IsChecked="{Binding useLowPowerShields, Mode=TwoWay}"/>
+                <RadioButton x:Name="UseHighPowerShieldsRad" Content="Use High Power Shields" HorizontalAlignment="Left" Margin="74,117,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.225,0.569" GroupName="Shields" IsEnabled="{Binding IsChecked, ElementName=UseShieldsCheckBox}" IsChecked="{Binding useHighPowerShields, Mode=TwoWay}"/>
+            </Grid>
+        </FlipView>
+        <Image x:Name="boomImage" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="1366" Source="ms-appx:///Assets/boom.png" Stretch="Fill" Visibility="{Binding visibility, Source={StaticResource selfDestroyViewModel}}"/>
+    </Grid>
+</Page>
